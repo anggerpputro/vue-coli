@@ -75,6 +75,15 @@
                     <div v-if="loading" class="overlay">
                         <i class="fas fa-2x fa-sync-alt fa-spin"></i>
                     </div>
+
+                    <Modal
+                        :show="openModal"
+                        title="INI MODAL LHO!!!"
+                        @opened="handleModalOpened"
+                        @closed="handleModalClosed"
+                    >
+                        <EditAkun :selected-data="selectedData" />        
+                    </Modal>
                 </div>
             </div>
         </div>
@@ -84,10 +93,20 @@
 <script>
 import { getAllAkun, deleteAkun } from "@/api/akun";
 
+import Modal from "@/components/Modal.vue";
+import EditAkun from "./edit";
+
 export default {
+    components: {
+        Modal,
+        EditAkun
+    },
     data() {
         return {
             loading: false,
+            openModal: false,
+
+            selectedData: null,
 
             paginationData: {
                 data: [],
@@ -114,7 +133,9 @@ export default {
         },
 
         handleEdit(row, index) {
-            alert("EDIT");
+            // alert("EDIT");
+            this.selectedData = row;
+            this.openModal = true;
         },
 
         async handleDelete(row, index) {
@@ -129,7 +150,14 @@ export default {
             }
 
             this.loading = false;
-        }
+        },
+
+        handleModalOpened() {
+            this.openModal = true;
+        },
+        handleModalClosed() {
+            this.openModal = false;
+        },
 }
 }
 </script>
